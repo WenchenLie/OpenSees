@@ -205,6 +205,8 @@ int OPS_setStrain();
 int OPS_getStrain();
 int OPS_getStress();
 int OPS_getTangent();
+int OPS_setTrialStrain();
+int OPS_commitState();
 int OPS_getDampTangent();
 int OPS_LimitCurve();
 
