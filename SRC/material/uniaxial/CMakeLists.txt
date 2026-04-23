@@ -6,6 +6,13 @@
 #==============================================================================
 
 target_sources(OPS_Material
+  PRIVATE
+    TSSCB.cpp
+  PUBLIC
+    TSSCB.h
+)
+
+target_sources(OPS_Material
     PRIVATE
       AxialSp.cpp
       AxialSp.cpp

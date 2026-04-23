@@ -1,6 +1,7 @@
 include ../../../Makefile.def
 
 OBJS       = UniaxialMaterial.o \
+	TSSCB.o \
 	ElasticMaterial.o \
 	Elastic2Material.o \
 	ElasticPowerFunc.o \

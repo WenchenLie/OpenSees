@@ -202,6 +202,8 @@
 #include "CFSSSWP.h"
 #include "CFSWSWP.h"
 
+#include "TSSCB.h"
+
 // Sections
 #include "ElasticSection2d.h"
 #include "ElasticSection3d.h"
@@ -1815,6 +1817,9 @@ FEM_ObjectBrokerAllClasses::getNewUniaxialMaterial(int classTag)
 
     case MAT_TAG_TDConcreteMC10NL:
       return new TDConcreteMC10NL();
+
+	case MAT_TAG_TSSCB:
+		return new TSSCB();
 
 	case MAT_TAG_Steel01:  
 	     return new Steel01();

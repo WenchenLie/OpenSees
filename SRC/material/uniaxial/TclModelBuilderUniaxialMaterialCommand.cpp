@@ -91,6 +91,7 @@ extern void* OPS_HystereticSMMaterial(void);
 extern void *OPS_CableMaterial(void);
 extern void *OPS_Bilin(void);
 extern void *OPS_Bilin02(void);
+extern void* OPS_TSSCB(void);
 extern void *OPS_Steel01(void);
 extern void *OPS_SteelMP(void);
 extern void *OPS_Steel02(void);
@@ -342,6 +343,15 @@ TclModelBuilderUniaxialMaterialCommand (ClientData clientData, Tcl_Interp *inter
 		else
 			return TCL_ERROR;
 	}
+
+    if (strcmp(argv[1], "TSSCB") == 0) {
+
+        void* theMat = OPS_TSSCB();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
 
 	if (strcmp(argv[1],"Steel01") == 0) {
 	  
