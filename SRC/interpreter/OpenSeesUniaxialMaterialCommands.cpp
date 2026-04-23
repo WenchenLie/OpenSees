@@ -84,6 +84,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // material class exists in a package yet to be loaded
 
 void* OPS_TSSCB();
+void* OPS_Failure();
+void* OPS_GeneralizedMaxwell();
+void* OPS_ModSMA();
+void* OPS_ModTakeda();
+void* OPS_TwoStage();
 void* OPS_ElasticMaterial();
 void* OPS_ElasticPPMaterial();
 void* OPS_ParallelMaterial();
@@ -524,6 +529,16 @@ static int setUpUniaxialMaterials(void) {
       std::make_pair("MaxwellMaterial", &OPS_Maxwell));
   uniaxialMaterialsMap.insert(
       std::make_pair("TSSCB", &OPS_TSSCB));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Failure", &OPS_Failure));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("GeneralizedMaxwell", &OPS_GeneralizedMaxwell));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ModSMA", &OPS_ModSMA));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("ModTakeda", &OPS_ModTakeda));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("TwoStage", &OPS_TwoStage));
 #ifndef _NO_NEW_RESTREPO
   uniaxialMaterialsMap.insert(
       std::make_pair("DoddRestr", &OPS_DoddRestr));

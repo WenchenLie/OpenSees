@@ -203,6 +203,11 @@
 #include "CFSWSWP.h"
 
 #include "TSSCB.h"
+#include "Failure.h"
+#include "GeneralizedMaxwell.h"
+#include "ModSMA.h"
+#include "ModTakeda.h"
+#include "TwoStage.h"
 
 // Sections
 #include "ElasticSection2d.h"
@@ -1820,6 +1825,21 @@ FEM_ObjectBrokerAllClasses::getNewUniaxialMaterial(int classTag)
 
 	case MAT_TAG_TSSCB:
 		return new TSSCB();
+
+	case MAT_TAG_Failure:
+		return new Failure();
+
+	case MAT_TAG_GeneralizedMaxwell:
+		return new GeneralizedMaxwell();
+
+	case MAT_TAG_ModSMA:
+		return new ModSMA();
+
+	case MAT_TAG_ModTakeda:
+		return new ModTakeda();
+
+	case MAT_TAG_TwoStage:
+		return new TwoStage();
 
 	case MAT_TAG_Steel01:  
 	     return new Steel01();

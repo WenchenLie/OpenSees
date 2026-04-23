@@ -325,7 +325,12 @@
 #define MAT_TAG_APDMD                           712
 #define MAT_TAG_APDFMD                          713
 
-#define MAT_TAG_TSSCB          233301
+#define MAT_TAG_TSSCB                      233301
+#define MAT_TAG_Failure                    233302
+#define MAT_TAG_GeneralizedMaxwell         233303
+#define MAT_TAG_ModSMA                     233304
+#define MAT_TAG_ModTakeda                  233305
+#define MAT_TAG_TwoStage                   233306
 
 // GNG material - J.Cook UCanterbury
 #define MAT_TAG_GNG 7001

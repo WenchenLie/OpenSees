@@ -8,8 +8,18 @@
 target_sources(OPS_Material
   PRIVATE
     TSSCB.cpp
+    Failure.cpp
+    GeneralizedMaxwell.cpp
+    ModSMA.cpp
+    ModTakeda.cpp
+    TwoStage.cpp
   PUBLIC
     TSSCB.h
+    Failure.h
+    GeneralizedMaxwell.h
+    ModSMA.h
+    ModTakeda.h
+    TwoStage.h
 )
 
 target_sources(OPS_Material

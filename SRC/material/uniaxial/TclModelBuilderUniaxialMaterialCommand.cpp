@@ -92,6 +92,11 @@ extern void *OPS_CableMaterial(void);
 extern void *OPS_Bilin(void);
 extern void *OPS_Bilin02(void);
 extern void* OPS_TSSCB(void);
+extern void* OPS_Failure(void);
+extern void* OPS_GeneralizedMaxwell(void);
+extern void* OPS_ModSMA(void);
+extern void* OPS_ModTakeda(void);
+extern void* OPS_TwoStage(void);
 extern void *OPS_Steel01(void);
 extern void *OPS_SteelMP(void);
 extern void *OPS_Steel02(void);
@@ -347,6 +352,51 @@ TclModelBuilderUniaxialMaterialCommand (ClientData clientData, Tcl_Interp *inter
     if (strcmp(argv[1], "TSSCB") == 0) {
 
         void* theMat = OPS_TSSCB();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    if (strcmp(argv[1], "Failure") == 0) {
+
+        void* theMat = OPS_Failure();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    if (strcmp(argv[1], "GeneralizedMaxwell") == 0) {
+
+        void* theMat = OPS_GeneralizedMaxwell();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    if (strcmp(argv[1], "ModSMA") == 0) {
+
+        void* theMat = OPS_ModSMA();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    if (strcmp(argv[1], "ModTakeda") == 0) {
+
+        void* theMat = OPS_ModTakeda();
+        if (theMat != 0)
+            theMaterial = (UniaxialMaterial*)theMat;
+        else
+            return TCL_ERROR;
+    }
+
+    if (strcmp(argv[1], "TwoStage") == 0) {
+
+        void* theMat = OPS_TwoStage();
         if (theMat != 0)
             theMaterial = (UniaxialMaterial*)theMat;
         else
