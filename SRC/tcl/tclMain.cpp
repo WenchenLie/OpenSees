@@ -252,7 +252,7 @@ g3TclMain(int argc, char **argv, Tcl_AppInitProc * appInitProc, int rank, int np
 	fprintf(stderr,"      (c) Copyright 1999-2016 The Regents of the University of California\n");
 	fprintf(stderr,"                              All Rights Reserved\n");
 	fprintf(stderr,"  (Copyright and Disclaimer @ http://www.berkeley.edu/OpenSees/copyright.html)\n");
-	fprintf(stderr,"                  (Compiled by Wenchen Lie (April 20, 2026))\n\n\n");
+	fprintf(stderr,"                  (Compiled by Wenchen Lie (April 23, 2026))\n\n\n");
       }
 #ifdef _PARALLEL_INTERPRETERS
     }
