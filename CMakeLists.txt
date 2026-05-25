@@ -600,6 +600,11 @@ target_link_libraries(G3
 
 add_library(OpenSeesLIB  EXCLUDE_FROM_ALL)
 
+#
+# For UMFPACK long int DLONG version -- Gustavo, Michael
+#
+target_compile_definitions(OpenSeesLIB PUBLIC _UMFPACK_DLONG)
+
 target_link_libraries(OpenSeesLIB
     ${OPS_Extension_List}
     OPS_Actor
@@ -797,7 +802,7 @@ if(MPI_FOUND)
 
     target_compile_options(OpenSeesMP PRIVATE ${MPI_CXX_COMPILE_FLAGS})
 
-    if (NOT DEFINED MUMPS_DIR)
+    if (DEFINED MUMPS_DIR)
         add_dependencies(OpenSeesMP mumps)
     endif()
 
