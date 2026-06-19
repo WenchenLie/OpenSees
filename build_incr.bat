@@ -1,5 +1,6 @@
 call "D:\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
 call "D:\oneAPI\setvars.bat" intel64 mod
+cmake.exe -S . -B build/Release -DOPS_Use_Graphics_Option=OpenGL
 cd build\Release
 cmake --build . --config Release --target OpenSees -j8
 cmake --build . --config Release --target OpenSeesPy -j8

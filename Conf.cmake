@@ -28,7 +28,9 @@ option(FMK
 
 set(OPS_Use_Graphics_Option
   None
-  # Base
-  # OpenGL
+  CACHE STRING "Graphics backend: None, Base, or OpenGL"
+)
+set_property(CACHE OPS_Use_Graphics_Option PROPERTY STRINGS
+  None Base OpenGL
 )
 

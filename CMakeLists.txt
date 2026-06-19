@@ -941,6 +941,12 @@ if (${OPS_Use_Graphics_Option} STREQUAL "Base")
 
 elseif (${OPS_Use_Graphics_Option} STREQUAL "OpenGL")
   message("OPS >>> Including OpenGL graphics option")
+  set(OPS_OPENGL_COMPILE_DEFINITION _AGL)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set(OPS_OPENGL_COMPILE_DEFINITION _WGL)
+  elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(OPS_OPENGL_COMPILE_DEFINITION _GLX)
+  endif()
   set_source_files_properties(
       "${OPS_SRC_DIR}/recorder/AlgorithmIncrements.cpp"
       "${OPS_SRC_DIR}/recorder/FilePlotter.cpp"
@@ -950,9 +956,12 @@ elseif (${OPS_Use_Graphics_Option} STREQUAL "OpenGL")
       "${OPS_SRC_DIR}/tcl/TclFeViewer.cpp"
       "${OPS_SRC_DIR}/tcl/TclVideoPlayer.cpp"
 
-    PROPERTIES COMPILE_DEFINITIONS _AGL
+    PROPERTIES COMPILE_DEFINITIONS ${OPS_OPENGL_COMPILE_DEFINITION}
   )
   target_link_libraries(${OPS_FINAL_TARGET} OPS_Graphics_GL OPS_Graphics)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_link_libraries(${OPS_FINAL_TARGET} opengl32 glu32)
+  endif()
 else()
   add_compile_definitions(_NOGRAPHICS)
 endif()

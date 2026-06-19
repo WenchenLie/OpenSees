@@ -52,14 +52,21 @@ target_sources(OPS_Graphics_Default
 
 target_sources(OPS_Graphics_GL
   PRIVATE
-    AGL_Device.cpp
     OpenGlDevice.cpp
     OpenGlRenderer.cpp
   PUBLIC
-    AGL_Device.h
     OpenGlDevice.h
     OpenGLRenderer.h
 )
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  target_sources(OPS_Graphics_GL
+    PRIVATE
+      AGL_Device.cpp
+    PUBLIC
+      AGL_Device.h
+  )
+endif()
 
 target_include_directories(OPS_Renderer PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
