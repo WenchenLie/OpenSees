@@ -119,7 +119,6 @@ target_sources(OPS_Material
       ConcreteZBH_smoothed.cpp 
       ConfinedConcrete01.cpp
       ContinuumUniaxial.cpp
-      CreepMaterial.cpp
       CreepShrinkageACI209.cpp
       CubicSpline.cpp
       DamperMaterial.cpp
@@ -248,7 +247,6 @@ target_sources(OPS_Material
       ConcreteZBH_smoothed.h
       ConfinedConcrete01.h
       ContinuumUniaxial.h
-      CreepMaterial.h
       CreepShrinkageACI209.h
       CubicSpline.h
       DamperMaterial.h
