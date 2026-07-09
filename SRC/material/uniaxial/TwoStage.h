@@ -83,16 +83,18 @@ class TwoStage : public UniaxialMaterial
     /*** State variables ***/
     double Cstrain;
     double Tstrain;
+    double Cstrain2;
+    double Tstrain2;
     double Cstress;
     double Tstress;
+    double Cstress1;
+    double Tstress1;
+    double Cstress2;
+    double Tstress2;
     double Ctangent;
     double Ttangent;
-    int Cstage;  // Stage
-    int Tstage;
-    double Cu_pos;  // Positive trasition surface
-    double Tu_pos;
-    double Cu_neg;  // Negative trasition surface
-    double Tu_neg;
+    double Chookgap;
+    double Thookgap;
 
     double bilinear(double F_prev, double u_prev, double du, double Fy, double k, double kp);
 };

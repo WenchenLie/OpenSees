@@ -91,30 +91,6 @@ OPS_TwoStage()
   kp2 = dData[5];
   ua = dData[6];
 
-  if (F1 <= 0) {
-      opserr << "WARNING Fy must be positive" << endln;
-      return 0;
-  }
-  if (k1 <= 0) {
-      opserr << "WARNING k1 must be positive" << endln;
-      return 0;
-  }
-  if (kp1 < 0) {
-      opserr << "WARNING k1p must be non-negative" << endln;
-      return 0;
-  }
-  if (F2 <= 0) {
-      opserr << "WARNING F2 must be positive" << endln;
-      return 0;
-  }
-  if (k2 <= 0) {
-      opserr << "WARNING k2 must be positive" << endln;
-      return 0;
-  }
-  if (kp2 < 0) {
-      opserr << "WARNING k2p must be non-negative" << endln;
-      return 0;
-  }
   if (ua < 0) {
       opserr << "WARNING ua must be non-negative" << endln;
       return 0;
@@ -145,23 +121,27 @@ TwoStage::TwoStage(int tag_, double F1_, double k1_, double kp1_, double F2_, do
     F1(F1_), k1(k1_), kp1(kp1_), F2(F2_), k2(k2_), kp2(kp2_), ua(ua_)
 {
     Cstrain = 0.0;
-    Cstress = 0.0;
     Tstrain = 0.0;
+    Cstrain2 = 0.0;
+    Tstrain2 = 0.0;
+    Cstress = 0.0;
     Tstress = 0.0;
+    Cstress1 = 0.0;
+    Tstress1 = 0.0;
+    Cstress2 = 0.0;
+    Tstress2 = 0.0;
     Ttangent = k1_;
     Ctangent = k1_;
-    Cstage = 1;
-    Tstage = 1;
-    Cu_pos = ua;
-    Tu_pos = ua;
-    Cu_neg = -ua;
-    Tu_neg = -ua;
+    Chookgap = 0.0;
+    Thookgap = 0.0;
 }
 
 TwoStage::TwoStage():UniaxialMaterial(0, MAT_TAG_TwoStage),
     F1(0.0), k1(0.0), kp1(0.0), F2(0.0), k2(0.0), kp2(0.0), ua(0.0),
-    Cstrain(0.0), Tstrain(0.0), Cstress(0.0), Tstress(0.0), Ctangent(0.0), Ttangent(0.0),
-    Cstage(1), Tstage(1), Cu_pos(0.0), Tu_pos(0.0), Cu_neg(0.0), Tu_neg(0.0)
+    Cstrain(0.0), Tstrain(0.0), Cstrain2(0.0), Tstrain2(0.0),
+    Cstress(0.0), Tstress(0.0), Cstress1(0.0), Tstress1(0.0),
+    Cstress2(0.0), Tstress2(0.0), Ctangent(0.0), Ttangent(0.0),
+    Chookgap(0.0), Thookgap(0.0)
 {
 
 }
@@ -173,73 +153,83 @@ TwoStage::~TwoStage ()
 
 int TwoStage::setTrialStrain (double strain, double strainRate)
 {
-   double dStrain = strain - Cstrain;
-   Tstrain = strain;
+    double dstrain2 = 0.0;
+    double dStrain = strain - Cstrain;
+
+    Tstrain = strain;
+    Tstrain2 = Cstrain2;
+    Tstress = Cstress;
+    Tstress1 = Cstress1;
+    Tstress2 = Cstress2;
+    Ttangent = Ctangent;
+    Thookgap = Chookgap;
+
     if (fabs(dStrain) <= DBL_EPSILON) {
         return 0;
     }
-    // Determine stage
-    if (Tstrain > Cu_pos) {
-        Tstage = 2;
-        Tu_pos = Tstrain;
-        Tu_neg = Tu_pos - 2 * ua;
-    }
-    else if (Tstrain < Cu_neg) {
-        Tstage = 2;
-        Tu_neg = Tstrain;
-        Tu_pos = Tu_neg + 2 * ua;
-    }
-    else {
-        Tstage = 1;
-    }
-    // Calculate stress && tangent
-    if (Cstage == 1 && Tstage == 1) {
-        // Remain stage - 1
-        Tstress = bilinear(Cstress, Cstrain, dStrain, F1, k1, kp1);
-    }
-    else if (Cstage == 2 && Tstage == 2) {
-        // Remain stage - 2
-        Tstress = bilinear(Cstress, Cstrain, dStrain, F2, k2, kp2);
-    }
-    else if (Cstage == 1 && Tstage == 2) {
-        // Transition stage - 1 to stage - 2
-        double du1;  // Strain component in stage - 1
-        double du2;  // Strain component in stage - 2
-        double F_trans;  // Trasition stress
+
+    Tstress1 = bilinear(Cstress1, Cstrain, dStrain, F1, k1, kp1);
+
+    if (-ua < Thookgap && Thookgap < ua) {
         if (dStrain > 0) {
-            du2 = Tstrain - Cu_pos;
+            double tmp = Thookgap + dStrain - ua;
+            dstrain2 = tmp > 0.0 ? tmp : 0.0;
+            Thookgap = Thookgap + dStrain < ua ? Thookgap + dStrain : ua;
         }
         else {
-            du2 = Tstrain - Cu_neg;
+            double tmp = Thookgap + dStrain + ua;
+            dstrain2 = tmp < 0.0 ? tmp : 0.0;
+            Thookgap = Thookgap + dStrain > -ua ? Thookgap + dStrain : -ua;
         }
-        du1 = dStrain - du2;
-        F_trans = bilinear(Cstress, Cstrain, du1, F1, k1, kp1);
-        Tstress = bilinear(F_trans, Cstrain + du1, du2, F2, k2, kp2);
+        Tstress2 = bilinear(Cstress2, Cstrain2, dstrain2, F2, k2, kp2);
+        Tstrain2 = Cstrain2 + dstrain2;
     }
-    else if (Cstage == 2 && Tstage == 1) {
-        // Transition stage - 2 to stage - 1
-        double du2;  // Strain component in stage - 2
-        double du1;  // Strain component in stage - 1
-        double F_trans;  // Trasition stress
-        if (dStrain < 0) {
-            du1 = Tstrain - Cu_pos;
+    else if (Thookgap == ua) {
+        Tstress2 = bilinear(Cstress2, Cstrain2, dStrain, F2, k2, kp2);
+        Tstrain2 = Cstrain2 + dStrain;
+        if (dStrain <= 0.0 && Tstress2 < 0.0) {
+            double denom = fabs(Tstress2) + fabs(Cstress2);
+            if (denom > DBL_EPSILON) {
+                dstrain2 = dStrain * fabs(Cstress2) / denom;
+                Thookgap = ua + (dStrain - dstrain2);
+                if (Thookgap < -ua) {
+                    Thookgap = -ua;
+                }
+            }
+            Tstress2 = 0.0;
         }
-        else {
-            du1 = Tstrain - Cu_neg;
+    }
+    else if (Thookgap == -ua) {
+        Tstress2 = bilinear(Cstress2, Cstrain2, dStrain, F2, k2, kp2);
+        Tstrain2 = Cstrain2 + dStrain;
+        if (dStrain >= 0.0 && Tstress2 > 0.0) {
+            double denom = fabs(Tstress2) + fabs(Cstress2);
+            if (denom > DBL_EPSILON) {
+                dstrain2 = dStrain * fabs(Cstress2) / denom;
+                Thookgap = -ua + (dStrain - dstrain2);
+                if (Thookgap > ua) {
+                    Thookgap = ua;
+                }
+            }
+            Tstress2 = 0.0;
         }
-        du2 = dStrain - du1;
-        F_trans = bilinear(Cstress, Cstrain, du2, F2, k2, kp2);
-        Tstress = bilinear(F_trans, Cstrain + du2, du1, F1, k1, kp1);
     }
     else {
-        opserr << "ERROR Should not reach hear (TwoStage Material)" << endln;
+        opserr << "ERROR Should not reach here (TwoStage Material, Thookgap = "
+               << Thookgap << ", ua = " << ua << ")" << endln;
+        return -1;
     }
+
+    Tstress = Tstress1 + Tstress2;
     Ttangent = (Tstress - Cstress) / dStrain;
     return 0;
 }
 
 double TwoStage::bilinear(double F_prev, double u_prev, double du, double Fy, double k, double kp)
 {
+    if (Fy == 0.0) {
+        return 0.0;
+    }
     double F_next = F_prev + du * k;
     if (F_next > kp * (u_prev + du) + (1 - kp / k) * Fy && du > 0) {
         F_next = kp * (u_prev + du) + (1 - kp / k) * Fy;
@@ -267,28 +257,30 @@ double TwoStage::getTangent ()
 
 double TwoStage::getInitialTangent()
 {
-    return F1 / k1;
+    return k1;
 }
 
 int TwoStage::commitState ()
 {
     Cstrain = Tstrain;
+    Cstrain2 = Tstrain2;
     Cstress = Tstress;
+    Cstress1 = Tstress1;
+    Cstress2 = Tstress2;
     Ctangent = Ttangent;
-    Cu_pos = Tu_pos;
-    Cu_neg = Tu_neg;
-    Cstage = Tstage;
+    Chookgap = Thookgap;
     return 0;
 }
 
 int TwoStage::revertToLastCommit ()
 {
-    Cstrain = Tstrain;
-    Cstress = Tstress;
-    Ctangent = Ttangent;
-    Cu_pos = Tu_pos;
-    Cu_neg = Tu_neg;
-    Cstage = Tstage;
+    Tstrain = Cstrain;
+    Tstrain2 = Cstrain2;
+    Tstress = Cstress;
+    Tstress1 = Cstress1;
+    Tstress2 = Cstress2;
+    Ttangent = Ctangent;
+    Thookgap = Chookgap;
     return 0;
 }
 
@@ -297,23 +289,39 @@ int TwoStage::revertToLastCommit ()
 int TwoStage::revertToStart ()
 {
    Cstrain = 0.0;
-   Cstress = 0.0;
-   Ttangent = F1 / k1;
-   Ctangent = F1 / k1;
    Tstrain = 0.0;
+   Cstrain2 = 0.0;
+   Tstrain2 = 0.0;
+   Cstress = 0.0;
    Tstress = 0.0;
-   Cu_pos = 0.0;
-   Tu_pos = 0.0;
-   Cu_neg = 0.0;
-   Tu_neg = 0.0;
-   Cstage = 1;
-   Tstage = 1;
+   Cstress1 = 0.0;
+   Tstress1 = 0.0;
+   Cstress2 = 0.0;
+   Tstress2 = 0.0;
+   Ttangent = k1;
+   Ctangent = k1;
+   Chookgap = 0.0;
+   Thookgap = 0.0;
    return 0;
 }
 
 UniaxialMaterial* TwoStage::getCopy ()
 {
    TwoStage* theCopy = new TwoStage(this->getTag(), F1, k1, kp1, F2, k2, kp2, ua);
+   theCopy->Cstrain = Cstrain;
+   theCopy->Tstrain = Tstrain;
+   theCopy->Cstrain2 = Cstrain2;
+   theCopy->Tstrain2 = Tstrain2;
+   theCopy->Cstress = Cstress;
+   theCopy->Tstress = Tstress;
+   theCopy->Cstress1 = Cstress1;
+   theCopy->Tstress1 = Tstress1;
+   theCopy->Cstress2 = Cstress2;
+   theCopy->Tstress2 = Tstress2;
+   theCopy->Ctangent = Ctangent;
+   theCopy->Ttangent = Ttangent;
+   theCopy->Chookgap = Chookgap;
+   theCopy->Thookgap = Thookgap;
    return theCopy;
 }
 
