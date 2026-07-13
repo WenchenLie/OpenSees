@@ -13,6 +13,7 @@ target_sources(OPS_Material
     ModSMA.cpp
     ModTakeda.cpp
     TwoStage.cpp
+    Degradation.cpp
   PUBLIC
     TSSCB.h
     Failure.h
@@ -20,6 +21,7 @@ target_sources(OPS_Material
     ModSMA.h
     ModTakeda.h
     TwoStage.h
+    Degradation.h
 )
 
 target_sources(OPS_Material

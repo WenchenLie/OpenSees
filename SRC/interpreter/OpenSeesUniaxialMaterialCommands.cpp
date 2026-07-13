@@ -89,6 +89,7 @@ void* OPS_GeneralizedMaxwell();
 void* OPS_ModSMA();
 void* OPS_ModTakeda();
 void* OPS_TwoStage();
+void* OPS_Degradation();
 void* OPS_ElasticMaterial();
 void* OPS_ElasticPPMaterial();
 void* OPS_ParallelMaterial();
@@ -538,6 +539,8 @@ static int setUpUniaxialMaterials(void) {
       std::make_pair("ModTakeda", &OPS_ModTakeda));
   uniaxialMaterialsMap.insert(
       std::make_pair("TwoStage", &OPS_TwoStage));
+  uniaxialMaterialsMap.insert(
+      std::make_pair("Degradation", &OPS_Degradation));
 #ifndef _NO_NEW_RESTREPO
   uniaxialMaterialsMap.insert(
       std::make_pair("DoddRestr", &OPS_DoddRestr));

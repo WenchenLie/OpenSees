@@ -208,6 +208,7 @@
 #include "ModSMA.h"
 #include "ModTakeda.h"
 #include "TwoStage.h"
+#include "Degradation.h"
 
 // Sections
 #include "ElasticSection2d.h"
@@ -1840,6 +1841,9 @@ FEM_ObjectBrokerAllClasses::getNewUniaxialMaterial(int classTag)
 
 	case MAT_TAG_TwoStage:
 		return new TwoStage();
+
+	case MAT_TAG_Degradation:
+		return new Degradation();
 
 	case MAT_TAG_Steel01:  
 	     return new Steel01();

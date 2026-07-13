@@ -330,6 +330,7 @@
 #define MAT_TAG_ModSMA                     233304
 #define MAT_TAG_ModTakeda                  233305
 #define MAT_TAG_TwoStage                   233306
+#define MAT_TAG_Degradation                233307
 
 // GNG material - J.Cook UCanterbury
 #define MAT_TAG_GNG 7001
