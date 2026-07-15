@@ -63,24 +63,29 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Python 3.14
+      - name: Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14"
-      - name: conan install	  
+          python-version: "3.12"
+      - name: conan install
         run: |
           pip install conan
-          conan profile detect --force	  
+          conan profile detect --force
+      - name: Install gfortran
+        run: |
+          brew install gcc
+          echo "FC=$(brew --prefix gcc)/bin/gfortran" >> $GITHUB_ENV
+          echo "GFORTRAN_LIB=$(dirname "$($(brew --prefix gcc)/bin/gfortran -print-file-name=libgfortran.dylib)")" >> $GITHUB_ENV
       - name: 2.3.2. Building the OpenSees Applications and Python module
         run: |
-          export FC=/opt/homebrew/bin/gfortran-13
-          export LDFLAGS="-L/opt/homebrew/lib/gcc/current -lgfortran"
           conan install . --build=missing
-          cmake -S . -B build/Release -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$HOME/bin	
-          cd build/Release
-          cmake --build . --target OpenSees -j8
-          cmake --build . --target OpenSeesPy -j8
-          mv ./OpenSeesPy.dylib ./opensees.so
+          cmake -S . -B build/Release \
+            -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$HOME/bin \
+            -DCMAKE_Fortran_COMPILER="$FC" \
+            -DCMAKE_EXE_LINKER_FLAGS="-L$GFORTRAN_LIB -Wl,-rpath,$GFORTRAN_LIB" \
+            -DCMAKE_SHARED_LINKER_FLAGS="-L$GFORTRAN_LIB -Wl,-rpath,$GFORTRAN_LIB"
       - name: Verification OpenSeesPySP
         run: |
           export PYTHONPATH="./build/Release"
