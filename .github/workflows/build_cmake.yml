@@ -86,6 +86,10 @@ jobs:
             -DCMAKE_Fortran_COMPILER="$FC" \
             -DCMAKE_EXE_LINKER_FLAGS="-L$GFORTRAN_LIB -Wl,-rpath,$GFORTRAN_LIB" \
             -DCMAKE_SHARED_LINKER_FLAGS="-L$GFORTRAN_LIB -Wl,-rpath,$GFORTRAN_LIB"
+          cd build/Release
+          cmake --build . --target OpenSees -j8
+          cmake --build . --target OpenSeesPy -j8
+          mv ./OpenSeesPy.dylib ./opensees.so
       - name: Verification OpenSeesPySP
         run: |
           export PYTHONPATH="./build/Release"
