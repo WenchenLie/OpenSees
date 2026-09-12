@@ -276,7 +276,7 @@ double ModTakeda::getTangent ()
 
 double ModTakeda::getInitialTangent()
 {
-    return Fy / k0;
+    return k0;
 }
 
 int ModTakeda::commitState ()
