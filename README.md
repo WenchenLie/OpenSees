@@ -25,6 +25,23 @@ https://OpenSees.github.io/OpenSeesDocumentation
 Steps to build OpenSees on Windows, Linux, and Mac:
 https://opensees.github.io/OpenSeesDocumentation/developer/build.html
 
+### Windows: build for multiple Python versions
+
+Edit the Python list at the top of `build.bat`, then run it from the repository root. Each row has
+the form `version|python.exe|Include directory|pythonXY.lib`. To add another version, add one
+`set "OPENSEES_PYTHON_315=3.15|D:\Python315\python.exe|D:\Python315\Include|D:\Python315\libs\python315.lib"`
+row with the paths for that installation. The script configures a separate
+`build/pyXY/Release` CMake tree for each version and places version-tagged extension modules in
+`build/python-modules`. It also builds `OpenSees.exe` in the first Python build tree. Existing
+build trees are retained for incremental builds.
+
+Use `build.bat -ListPython` to verify all configured paths. Run `build.bat -ConfigureOnly` to
+configure the CMake trees without compiling. Each Python installation must include `Python.h`
+and its matching Release import library (`libs/pythonXY.lib`).
+
+For example, test the shared module directory with
+`set PYTHONPATH=%CD%\build\python-modules` followed by `py -3.11 -c "import opensees; print(opensees.__file__)"`.
+
 ## Modeling Questions
 Issues related to modeling questions will be closed. Instead, post your modeling questions on the OpenSees 
 message board or in the OpenSees Facebook group.
