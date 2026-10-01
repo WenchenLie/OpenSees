@@ -139,6 +139,7 @@ target_sources(OPS_Material
       FatigueMaterial.cpp
       #FedeasMaterial.cpp
       FlagShapeMaterial.cpp
+      FrictionSpringDamper.cpp
       GMG_CyclicReinforcedConcrete.cpp
       GNGMaterial.cpp
       HardeningMaterial.cpp
@@ -267,6 +268,7 @@ target_sources(OPS_Material
       FatigueMaterial.h
       #FedeasMaterial.h
       FlagShapeMaterial.h
+      FrictionSpringDamper.h
       GNGMaterial.h
       GMG_CyclicReinforcedConcrete.h
       HardeningMaterial.h
