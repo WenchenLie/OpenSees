@@ -88,6 +88,8 @@ CThreeDimensional.h
 Concrete.h
 forumat.for
 build*
+!build_macos.command
 bin
 __pycache__
 *.dat
+*.DS_Store
