@@ -166,6 +166,9 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\Concrete01.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\GPCConcrete01.cpp">
+      <Filter>uniaxial</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\SRC\material\uniaxial\Concrete01WithSITC.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
@@ -1127,6 +1130,9 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\GNGMaterial.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\GPCConcrete01.cpp">
+      <Filter>uniaxial</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\SRC\material\uniaxial\TensionOnlyMaterial.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
@@ -1499,6 +1505,9 @@
     <ClCompile Include="..\..\..\SRC\material\uniaxial\FRCC.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\SRC\material\uniaxial\FrictionSpringDamper.cpp">
+      <Filter>uniaxial</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\SRC\material\uniaxial\CoulombDamperMaterial.cpp">
       <Filter>uniaxial</Filter>
     </ClCompile>
@@ -1619,6 +1628,9 @@
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\Concrete01.h">
+      <Filter>uniaxial</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\GPCConcrete01.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\Concrete01WithSITC.h">
@@ -2525,6 +2537,9 @@
     <ClInclude Include="..\..\..\SRC\material\uniaxial\GNGMaterial.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\GPCConcrete01.h">
+      <Filter>uniaxial</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\TensionOnlyMaterial.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
@@ -2604,6 +2619,9 @@
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\uniaxial\ExternalUniaxialMaterial.h">
+      <Filter>uniaxial</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\SRC\material\uniaxial\FrictionSpringDamper.h">
       <Filter>uniaxial</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\SRC\material\nD\ExternalNDMaterial.h">
